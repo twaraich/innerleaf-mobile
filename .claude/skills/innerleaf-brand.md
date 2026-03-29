@@ -7,7 +7,7 @@ copy for any Inner Leaf project (exitme-web or exitme-mobile).
 ## Visual Rules
 - ALWAYS use CSS custom properties for colors, never hardcoded hex values
 - ALWAYS use Cormorant Garamond for headings, DM Sans for body text
-- NEVER use generic fonts (Inter, Roboto, Arial, system fonts) as primary
+- NEVER use generic fonts (Inter, Roboto, Arial, system fonts)
 - Dark theme default: #011f20 background, #F5F1E8 text
 - Light theme: #F5F1E8 background, #1A1A1A text
 - Gold (#C9A227) for accents and separators ONLY — never as primary color
