@@ -53,15 +53,25 @@ section and adjust tasks accordingly. Don't push back on pivots — adapt.
 
 ### Current app concept
 A mindful journaling companion. The app is a ritual, not a productivity tool.
+Bilingual NO/EN — Norwegian as primary language. Norwegian brand vocabulary
+(Stillhet, Årringer, Mønster) used as feature names even in English mode.
 
 ### Current screen flow (subject to change)
-1. **Arrive**: Warm landing. Time-aware greeting. Minimal.
-2. **Mood Check-in**: Weather metaphors (sunny, cloudy, rainy, stormy, foggy).
-   Single tap selection. No scales, no numbers shown to user.
-3. **Still**: Breathing animation (4-7-8 pattern). Currently planned to
-   auto-launch on app open, skippable with single tap. (Open question:
-   should this be automatic or optional?)
-4. **Write**: Distraction-free journaling. Minimal chrome. Auto-save.
+1. **Stillhet (Stillness)**: Breathing animation. Auto-plays on app open.
+   This IS the app's first impression — no splash screen, no onboarding
+   before it. Single tap anywhere skips to next screen.
+2. **Mood Check-in**: Full-screen weather scene (sunny, cloudy, rainy,
+   stormy, foggy). Single tap to select. Not an emoji grid — immersive
+   weather visuals.
+3. **Write**: Distraction-free journaling. Minimal chrome. Auto-save.
+
+### Future feature concepts (not M1)
+- **Årringer (Tree Rings)**: Entry visualization as tree cross-section rings.
+  Mood affects ring texture. Not gamified — thin and thick rings are equally
+  valid. A record of presence, not performance.
+- **Mønster (Patterns)**: Quiet text observations about journaling habits.
+  Stated as noticing, not judgment. Appears after 2+ weeks of data.
+  Example: "You've written more on cloudy days lately."
 
 ### Current monetization thinking (v2, not v1)
 - Freemium with QR codes in physical journals → unlock premium
@@ -69,9 +79,9 @@ A mindful journaling companion. The app is a ritual, not a productivity tool.
 - Premium features: AI prompts, extended history, pattern insights
 
 ### Open design questions
-- Should "Still" breathing screen auto-launch or be optional?
-- What does the home/landing experience look like?
-- Should there be any data visualization (mood patterns over time)?
+- Should Stillhet have ambient sound or be silent?
+- Should mood check-in be skippable (go straight to Write)?
+- What does the Write screen show for first-time users with no entries?
 - Widget design for home screen one-tap mood logging?
 
 > **Note:** Screens, flow, and features may be added, removed, or completely
@@ -88,23 +98,48 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 - [x] Expo project initialized
 - [x] Design tokens created (tokens.ts)
 - [x] Fonts installed (Cormorant Garamond, DM Sans)
-- [ ] Font loading in App.tsx with expo-font
-- [ ] Navigation skeleton (placeholder screens, native stack)
-- [ ] Global theme provider (dark theme as default)
-- [ ] Basic Arrive screen — placeholder with time-aware greeting
+- [x] Font loading in App.tsx with expo-font
+- [x] Navigation skeleton: Stillhet → Mood → Write (3 screens, native stack)
+- [x] Global theme provider (dark theme as default)
+- [x] Placeholder Stillhet screen
+- [x] Placeholder Mood screen
+- [x] Placeholder Write screen
+
+### Current Milestone: M2 — Core Screens
+- [x] Stillhet: 4-7-8 breathing animation (expanding/contracting circle)
+- [x] Mood: full-screen weather scenes with immersive gradients (horizontal pager)
+- [x] Write: keyboard handling, safe areas, word count
+- [x] Pass mood selection through navigation to Write screen
+
+### Current Milestone: M3 — Data Layer + Persistence
+- [x] SQLite database init (expo-sqlite SQLiteProvider)
+- [x] Journal entries table schema + migration
+- [x] Entry CRUD operations (create, read, update, getAll, getToday)
+- [x] Auto-save on Write screen (debounced 1s via useAutoSave hook)
+- [x] Load today's entry if one exists (resume writing)
+- [x] Database provider in App.tsx (innerleaf.db)
 
 ### Future Milestones (scope may change)
-- **M2**: Core screens — build whatever screens are defined in Direction
-- **M3**: Data layer + persistence (SQLite)
 - **M4**: Shopify integration bridge (connect to physical journal products)
+  - NOTE: Veer paused before starting M4. Needs scoping — physical journals
+    may not exist yet. Ask before starting: redefine M4, skip to M5/M6,
+    or switch to exitme-web WIP?
 - **M5**: Premium features + monetization
 - **M6**: Polish, widget, launch prep
 
 ### Blocked
 (nothing currently)
 
+### Notes for next session
+- expo-sqlite does NOT work on web platform (WASM bundling issue). Test
+  on iOS/Android only: `npx expo start --android` or `--ios`
+- All M1-M3 code is uncommitted — consider committing before continuing
+- exitme-web still has uncommitted WIP (theme migration, ImageTrackCarousel)
+
 ### Done
-(nothing yet — project just scaffolded)
+- **M1**: Scaffolding — Expo init, tokens, fonts, navigation skeleton, theme provider, placeholder screens
+- **M2**: Core screens — Stillhet breathing animation, immersive mood weather pager, Write with keyboard/safe areas
+- **M3**: Data layer — SQLite via expo-sqlite, entries table, auto-save, resume today's entry
 
 ---
 
