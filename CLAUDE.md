@@ -135,6 +135,9 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
   on iOS/Android only: `npx expo start --android` or `--ios`
 - M4 (Shopify integration) is PAUSED — ask before starting
 - Next logical work: either redefine M4, or switch to innerleaf-web WIP
+- Folder was renamed from exitme-mobile/ → innerleaf-mobile/ on 2026-04-04
+- Guardian workflow added (.github/workflows/guardian.yml) on 2026-04-04
+- Branch is m1-m3-core-app, pushed to origin
 
 ### Done
 - **M1**: Scaffolding — Expo init, tokens, fonts, navigation skeleton, theme provider, placeholder screens
