@@ -1,4 +1,4 @@
-# exitme-mobile — Spoke 1b: Inner Leaf Companion App
+# innerleaf-mobile — Spoke 1b: Inner Leaf Companion App
 
 ## Identity
 This is **Spoke 1b (Product-Mobile)** in the Inner Leaf multi-spoke architecture.
@@ -18,7 +18,7 @@ See ../ARCHITECTURE.md for the full system overview.
 These are load-bearing walls. Don't change without explicit instruction.
 
 ### Brand & Design System
-Same tokens as exitme-web:
+Same tokens as innerleaf-web:
 - Dark: #011f20 | Sage: #5b7a74 | Cream: #F5F1E8 | Gold: #C9A227
 - Headings: Cormorant Garamond | Body: DM Sans
 - Philosophy: "Design for the disengaged user"
@@ -94,7 +94,7 @@ Bilingual NO/EN — Norwegian as primary language. Norwegian brand vocabulary
 Update this section as work progresses. When switching away from this project,
 leave clear notes on what's in progress so Claude Code can resume cleanly.
 
-### Current Milestone: M1 — Scaffolding
+### M1 — Scaffolding ✅ (committed: 4dd4ca0)
 - [x] Expo project initialized
 - [x] Design tokens created (tokens.ts)
 - [x] Fonts installed (Cormorant Garamond, DM Sans)
@@ -105,13 +105,13 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 - [x] Placeholder Mood screen
 - [x] Placeholder Write screen
 
-### Current Milestone: M2 — Core Screens
+### M2 — Core Screens ✅ (committed: 4dd4ca0)
 - [x] Stillhet: 4-7-8 breathing animation (expanding/contracting circle)
 - [x] Mood: full-screen weather scenes with immersive gradients (horizontal pager)
 - [x] Write: keyboard handling, safe areas, word count
 - [x] Pass mood selection through navigation to Write screen
 
-### Current Milestone: M3 — Data Layer + Persistence
+### M3 — Data Layer + Persistence ✅ (committed: 4dd4ca0)
 - [x] SQLite database init (expo-sqlite SQLiteProvider)
 - [x] Journal entries table schema + migration
 - [x] Entry CRUD operations (create, read, update, getAll, getToday)
@@ -123,7 +123,7 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 - **M4**: Shopify integration bridge (connect to physical journal products)
   - NOTE: Veer paused before starting M4. Needs scoping — physical journals
     may not exist yet. Ask before starting: redefine M4, skip to M5/M6,
-    or switch to exitme-web WIP?
+    or switch to innerleaf-web WIP?
 - **M5**: Premium features + monetization
 - **M6**: Polish, widget, launch prep
 
@@ -133,8 +133,8 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 ### Notes for next session
 - expo-sqlite does NOT work on web platform (WASM bundling issue). Test
   on iOS/Android only: `npx expo start --android` or `--ios`
-- All M1-M3 code is uncommitted — consider committing before continuing
-- exitme-web still has uncommitted WIP (theme migration, ImageTrackCarousel)
+- M4 (Shopify integration) is PAUSED — ask before starting
+- Next logical work: either redefine M4, or switch to innerleaf-web WIP
 
 ### Done
 - **M1**: Scaffolding — Expo init, tokens, fonts, navigation skeleton, theme provider, placeholder screens
