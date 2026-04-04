@@ -148,25 +148,31 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 
 ## Session Management
 
-**READ this section at the start of every session. FOLLOW it at the end.**
+**These rules are non-negotiable. Follow them exactly.**
 
 ### On session start
-1. Read the Task Tracker above — that's where the last session left off
-2. Check Direction for any changes Veer may have made manually
-3. Ask: "Last session left off at [X]. Want to continue there or work on something else?"
 
-### On session end (IMPORTANT)
-When you detect the session is wrapping up — Veer says things like "that's good
-for now", "I'm switching to web", "let's stop here", "save progress", or
-commits and seems done — **proactively ask:**
+1. Read the CLAUDE.md for ALL THREE repos (innerleaf-web, innerleaf-mobile, innerleaf-hub)
+2. Print a cross-system status — one line per repo, like:
+   ```
+   innerleaf-web:    WIP theme variable migration (5 components), Phase 6 done
+   innerleaf-mobile: M1-M3 complete, M4 paused — needs scoping
+   innerleaf-hub:    Dashboard live, Scout daily schedule active
+   ```
+3. Then ask what to work on
 
-> "Want me to update CLAUDE.md before you go? I'll save what's done,
-> what's in progress, and anything that changed direction."
+### On session end (MANDATORY — do NOT ask, just do it)
 
-Then update:
+When the session is wrapping up — Veer says "that's good for now", "let's stop",
+"save progress", "I'm done", commits and seems done, or simply stops responding
+with new tasks — **immediately update ALL relevant CLAUDE.md files. Do not ask.**
+
+Update:
 - Task Tracker: check off completed items, add notes on in-progress work
 - Direction: remove scrapped features, add new ones Veer mentioned
+- Notes for next session: anything the next Claude instance needs to know
 - Move milestone markers forward if a milestone is complete
 - If anything moved from Direction to Decided (or vice versa), update that too
+- Commit the CLAUDE.md changes and push
 
-**Never let a session end without offering to save state.**
+**This is automatic. Never ask "want me to update?" — just do it.**
