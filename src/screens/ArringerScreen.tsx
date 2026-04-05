@@ -6,14 +6,15 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../navigation/AppNavigator';
 import {useTheme} from '../contexts/ThemeContext';
-import {getAllEntries, seedDemoEntries, type JournalEntry} from '../db/entries';
+import {getAllEntries, seedDemoEntries, clearAllEntries, type JournalEntry} from '../db/entries';
 import type {MoodType} from '../constants/tokens';
 import {fonts, spacing} from '../constants/tokens';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Arringer'>;
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
-const MAX_RADIUS = Math.min(SCREEN_WIDTH * 0.42, 160);
+const MAX_RADIUS = Math.min(SCREEN_WIDTH * 0.65, 240);
+console.log('[DEBUG Arringer] SCREEN_WIDTH:', SCREEN_WIDTH, 'MAX_RADIUS:', MAX_RADIUS);
 const SVG_SIZE = MAX_RADIUS * 2 + 40; // padding around the tree
 const CENTER = SVG_SIZE / 2;
 
@@ -101,6 +102,11 @@ export function ArringerScreen({navigation}: Props) {
     setRefreshKey((k) => k + 1);
   };
 
+  const handleClearAll = () => {
+    clearAllEntries(db);
+    setRefreshKey((k) => k + 1);
+  };
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -184,6 +190,20 @@ export function ArringerScreen({navigation}: Props) {
             {rings.length} {rings.length === 1 ? 'ring' : 'rings'}
           </Text>
         )}
+        {__DEV__ && rings.length > 0 && (
+          <View style={styles.devButtons}>
+            <Pressable onPress={handleSeedDemo} style={styles.devButton} hitSlop={12}>
+              <Text style={[styles.seedLabel, {color: colors.textSecondary}]}>
+                + add demo data
+              </Text>
+            </Pressable>
+            <Pressable onPress={handleClearAll} style={styles.devButton} hitSlop={12}>
+              <Text style={[styles.seedLabel, {color: colors.textSecondary}]}>
+                clear all
+              </Text>
+            </Pressable>
+          </View>
+        )}
       </View>
 
       {/* Back button */}
@@ -248,6 +268,18 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 14,
     letterSpacing: 1,
+  },
+  devButtons: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  devButton: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 8,
   },
   seedButton: {
     marginTop: spacing.xl,

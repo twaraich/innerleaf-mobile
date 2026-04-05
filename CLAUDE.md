@@ -127,11 +127,24 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 - [x] Navigation route added to AppNavigator
 - [x] Accessible from WriteScreen footer link
 
+### M5 — Årringer Visual Upgrade (Skia + Reanimated)
+- [ ] Install @shopify/react-native-skia and configure Expo config plugin
+- [ ] Switch from Expo Go to development build (required by Skia)
+- [ ] Rewrite ArringerScreen ring rendering from react-native-svg to Skia Canvas
+- [ ] Add Perlin noise (FractalNoise) texture overlay on rings for organic wood-grain look
+- [ ] Mood-based ring colors with SweepGradient/RadialGradient (richer than flat stroke colors)
+- [ ] Soft glow effect on newest ring using Skia Shadow/Blur
+- [ ] Animated ring growth on screen entry (Reanimated withTiming/withSpring on radius)
+- [ ] Fade-in stagger for rings (oldest to newest)
+- [ ] Heartwood center with radial gradient and subtle Perlin noise texture
+- [ ] Pinch-to-zoom interaction (react-native-gesture-handler + Skia)
+- [ ] Tap ring to show entry date/mood tooltip
+
 ### Future Milestones (scope may change)
-- **M5**: Shopify integration bridge (connect to physical journal products)
+- **M6**: Shopify integration bridge (connect to physical journal products)
   - NOTE: Physical journals may not exist yet. Ask before starting.
-- **M6**: Premium features + monetization
-- **M7**: Polish, widget, launch prep
+- **M7**: Premium features + monetization
+- **M8**: Polish, widget, launch prep
 
 ### Blocked
 (nothing currently)
@@ -143,13 +156,21 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 - M4 (Årringer) complete — tree ring visualization built with react-native-svg
 - Stillhet breathing loop fixed (6ae5c63) — was stuck on "hold", now uses useState
 - WriteScreen has back + done buttons (6ae5c63)
-- Årringer has "preview with demo data" button — seeds 15 entries for testing
+- Årringer has "preview with demo data" button — seeds 60 entries for testing
 - seedDemoEntries() in entries.ts is dev-only — remove before launch
-- Shopify integration pushed to M5 — physical journals may not exist yet
+- clearAllEntries() added to entries.ts — dev-only, wipes all entries
+- Dev buttons ("+ add demo data" / "clear all") visible on Årringer when __DEV__ and entries > 0
+- App WAS picking up changes via tunnel — the "old UI" was actually correct for 1 entry in DB
+- Debug console.log in ArringerScreen confirms MAX_RADIUS value on load
+- Shopify integration pushed to M6 — physical journals may not exist yet
 - Folder was renamed from exitme-mobile/ → innerleaf-mobile/ on 2026-04-04
 - Guardian workflow added (.github/workflows/guardian.yml) on 2026-04-04
 - Branch is m1-m3-core-app, pushed to origin
-- Next logical work: visual polish on existing screens, Mønster (patterns), or M5 scoping
+- **M5 requires switching to development builds — no more Expo Go** (Skia uses native modules)
+- Skia v2.6+ required for Expo SDK 53+
+- react-native-reanimated >= 3.19.1 is a peer dependency of Skia
+- The current SVG implementation in ArringerScreen.tsx is the baseline to replace
+- Next logical work: M5 (Skia visual upgrade for Årringer)
 
 ### Done
 - **M1**: Scaffolding — Expo init, tokens, fonts, navigation skeleton, theme provider, placeholder screens
