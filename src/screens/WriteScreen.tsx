@@ -2,11 +2,14 @@ import {
   View,
   Text,
   TextInput,
+  Pressable,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import {useState, useEffect, useCallback, useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSQLiteContext} from 'expo-sqlite';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -27,6 +30,7 @@ export function WriteScreen({route}: Props) {
   const {colors} = useTheme();
   const insets = useSafeAreaInsets();
   const db = useSQLiteContext();
+  const nav = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [text, setText] = useState('');
   const [saved, setSaved] = useState(false);
   const entryRef = useRef<JournalEntry | null>(null);
@@ -97,6 +101,15 @@ export function WriteScreen({route}: Props) {
             </Text>
           )}
           <View style={{flex: 1}} />
+          <Pressable
+            onPress={() => nav.navigate('Arringer')}
+            hitSlop={12}
+            style={styles.arringerButton}
+          >
+            <Text style={[styles.arringerLabel, {color: colors.textSecondary}]}>
+              arringer
+            </Text>
+          </Pressable>
           {wordCount > 0 && (
             <Text style={[styles.wordCount, {color: colors.textSecondary}]}>
               {wordCount} {wordCount === 1 ? 'word' : 'words'}
@@ -150,5 +163,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 12,
     opacity: 0.5,
+  },
+  arringerButton: {
+    marginRight: spacing.md,
+  },
+  arringerLabel: {
+    fontFamily: fonts.body,
+    fontSize: 12,
+    opacity: 0.5,
+    letterSpacing: 1,
   },
 });
