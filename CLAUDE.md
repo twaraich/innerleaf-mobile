@@ -119,13 +119,19 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 - [x] Load today's entry if one exists (resume writing)
 - [x] Database provider in App.tsx (innerleaf.db)
 
+### M4 — Årringer (Tree Rings) ✅ (committed: 391e5a8)
+- [x] Install react-native-svg
+- [x] ArringerScreen: concentric SVG rings, one per journal entry
+- [x] Mood-based organic ring variation (width/color by weather)
+- [x] Empty state: seed/pith with gentle message
+- [x] Navigation route added to AppNavigator
+- [x] Accessible from WriteScreen footer link
+
 ### Future Milestones (scope may change)
-- **M4**: Shopify integration bridge (connect to physical journal products)
-  - NOTE: Veer paused before starting M4. Needs scoping — physical journals
-    may not exist yet. Ask before starting: redefine M4, skip to M5/M6,
-    or switch to innerleaf-web WIP?
-- **M5**: Premium features + monetization
-- **M6**: Polish, widget, launch prep
+- **M5**: Shopify integration bridge (connect to physical journal products)
+  - NOTE: Physical journals may not exist yet. Ask before starting.
+- **M6**: Premium features + monetization
+- **M7**: Polish, widget, launch prep
 
 ### Blocked
 (nothing currently)
@@ -133,16 +139,18 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 ### Notes for next session
 - expo-sqlite does NOT work on web platform (WASM bundling issue). Test
   on iOS/Android only: `npx expo start --android` or `--ios`
-- M4 (Shopify integration) is PAUSED — ask before starting
-- Next logical work: either redefine M4, or switch to innerleaf-web WIP
+- M4 (Årringer) complete — tree ring visualization built with react-native-svg
+- Shopify integration pushed to M5 — physical journals may not exist yet
 - Folder was renamed from exitme-mobile/ → innerleaf-mobile/ on 2026-04-04
 - Guardian workflow added (.github/workflows/guardian.yml) on 2026-04-04
 - Branch is m1-m3-core-app, pushed to origin
+- Next logical work: visual polish on existing screens, Mønster (patterns), or M5 scoping
 
 ### Done
 - **M1**: Scaffolding — Expo init, tokens, fonts, navigation skeleton, theme provider, placeholder screens
 - **M2**: Core screens — Stillhet breathing animation, immersive mood weather pager, Write with keyboard/safe areas
 - **M3**: Data layer — SQLite via expo-sqlite, entries table, auto-save, resume today's entry
+- **M4**: Årringer — Tree ring visualization, mood-based organic rings, react-native-svg
 
 ---
 
