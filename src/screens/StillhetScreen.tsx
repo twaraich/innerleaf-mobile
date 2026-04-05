@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {View, Text, Pressable, Animated, StyleSheet, Dimensions} from 'react-native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../navigation/AppNavigator';
@@ -11,9 +11,14 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Stillhet'>;
 const INHALE = 4000;
 const HOLD = 7000;
 const EXHALE = 8000;
-const CYCLE = INHALE + HOLD + EXHALE;
 
 type Phase = 'inhale' | 'hold' | 'exhale';
+
+const PHASE_LABEL: Record<Phase, string> = {
+  inhale: 'breathe in',
+  hold: 'hold',
+  exhale: 'breathe out',
+};
 
 const {width} = Dimensions.get('window');
 const CIRCLE_MAX = width * 0.55;
@@ -22,14 +27,14 @@ const CIRCLE_MIN = width * 0.2;
 export function StillhetScreen({navigation}: Props) {
   const {colors} = useTheme();
   const scale = useRef(new Animated.Value(0)).current;
-  const phaseOpacity = useRef(new Animated.Value(0)).current;
   const hintOpacity = useRef(new Animated.Value(0)).current;
-  const phaseRef = useRef<Phase>('inhale');
-  const phaseText = useRef(new Animated.Value(0)).current;
+  const [phase, setPhase] = useState<Phase>('inhale');
+  const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
     // Fade in hint after 3 seconds
     const hintTimer = setTimeout(() => {
+      setShowHint(true);
       Animated.timing(hintOpacity, {
         toValue: 1,
         duration: 1500,
@@ -37,64 +42,39 @@ export function StillhetScreen({navigation}: Props) {
       }).start();
     }, 3000);
 
-    // Fade in breathing phase text
-    Animated.timing(phaseOpacity, {
-      toValue: 1,
-      duration: 1200,
-      useNativeDriver: true,
-    }).start();
+    let cancelled = false;
 
-    // Start breathing loop
+    // Breathing loop using state for phase text (reliable) + Animated for circle
     const breathe = () => {
-      Animated.sequence([
-        // Inhale — expand
-        Animated.timing(scale, {
-          toValue: 1,
-          duration: INHALE,
-          useNativeDriver: true,
-        }),
-        // Hold — pause
-        Animated.delay(HOLD),
-        // Exhale — contract
-        Animated.timing(scale, {
-          toValue: 0,
-          duration: EXHALE,
-          useNativeDriver: true,
-        }),
-      ]).start(({finished}) => {
-        if (finished) breathe();
-      });
-    };
-
-    // Phase text animation — tracks which phase we're in
-    const phaseLoop = () => {
-      Animated.sequence([
-        Animated.timing(phaseText, {toValue: 0, duration: 0, useNativeDriver: false}),
-        Animated.delay(INHALE),
-        Animated.timing(phaseText, {toValue: 1, duration: 0, useNativeDriver: false}),
-        Animated.delay(HOLD),
-        Animated.timing(phaseText, {toValue: 2, duration: 0, useNativeDriver: false}),
-        Animated.delay(EXHALE),
-      ]).start(({finished}) => {
-        if (finished) phaseLoop();
+      if (cancelled) return;
+      setPhase('inhale');
+      Animated.timing(scale, {
+        toValue: 1,
+        duration: INHALE,
+        useNativeDriver: true,
+      }).start(({finished}) => {
+        if (!finished || cancelled) return;
+        setPhase('hold');
+        setTimeout(() => {
+          if (cancelled) return;
+          setPhase('exhale');
+          Animated.timing(scale, {
+            toValue: 0,
+            duration: EXHALE,
+            useNativeDriver: true,
+          }).start(({finished: f2}) => {
+            if (f2 && !cancelled) breathe();
+          });
+        }, HOLD);
       });
     };
 
     breathe();
-    phaseLoop();
-
-    // Track phase for text display
-    const listenerId = phaseText.addListener(({value}) => {
-      if (value < 0.5) phaseRef.current = 'inhale';
-      else if (value < 1.5) phaseRef.current = 'hold';
-      else phaseRef.current = 'exhale';
-    });
 
     return () => {
+      cancelled = true;
       clearTimeout(hintTimer);
       scale.stopAnimation();
-      phaseText.stopAnimation();
-      phaseText.removeListener(listenerId);
     };
   }, []);
 
@@ -106,23 +86,6 @@ export function StillhetScreen({navigation}: Props) {
   const circleOpacity = scale.interpolate({
     inputRange: [0, 1],
     outputRange: [0.3, 0.6],
-  });
-
-  // Map phase value to text
-  const inhaleOpacity = phaseText.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [1, 1, 0],
-    extrapolate: 'clamp',
-  });
-  const holdOpacity = phaseText.interpolate({
-    inputRange: [0.5, 1, 1.5],
-    outputRange: [0, 1, 0],
-    extrapolate: 'clamp',
-  });
-  const exhaleOpacity = phaseText.interpolate({
-    inputRange: [1.5, 2, 2.5],
-    outputRange: [0, 1, 1],
-    extrapolate: 'clamp',
   });
 
   return (
@@ -146,36 +109,20 @@ export function StillhetScreen({navigation}: Props) {
           />
         </View>
 
-        <Animated.View style={[styles.phaseContainer, {opacity: phaseOpacity}]}>
-          <Animated.Text
-            style={[styles.phase, {color: colors.textSecondary, opacity: inhaleOpacity}]}
-          >
-            breathe in
-          </Animated.Text>
-          <Animated.Text
-            style={[
-              styles.phase,
-              {color: colors.textSecondary, opacity: holdOpacity, position: 'absolute'},
-            ]}
-          >
-            hold
-          </Animated.Text>
-          <Animated.Text
-            style={[
-              styles.phase,
-              {color: colors.textSecondary, opacity: exhaleOpacity, position: 'absolute'},
-            ]}
-          >
-            breathe out
-          </Animated.Text>
-        </Animated.View>
+        <View style={styles.phaseContainer}>
+          <Text style={[styles.phase, {color: colors.textSecondary}]}>
+            {PHASE_LABEL[phase]}
+          </Text>
+        </View>
       </View>
 
-      <Animated.Text
-        style={[styles.hint, {color: colors.textSecondary, opacity: hintOpacity}]}
-      >
-        tap anywhere to continue
-      </Animated.Text>
+      {showHint && (
+        <Animated.Text
+          style={[styles.hint, {color: colors.textSecondary, opacity: hintOpacity}]}
+        >
+          tap anywhere to continue
+        </Animated.Text>
+      )}
     </Pressable>
   );
 }

@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   KeyboardAvoidingView,
+  Keyboard,
   Platform,
 } from 'react-native';
 import {useState, useEffect, useCallback, useRef} from 'react';
@@ -67,7 +68,28 @@ export function WriteScreen({route}: Props) {
       style={[styles.container, {backgroundColor: colors.background}]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={[styles.inner, {paddingTop: insets.top + spacing.lg}]}>
+      <View style={[styles.inner, {paddingTop: insets.top + spacing.sm}]}>
+        <View style={styles.topBar}>
+          <Pressable
+            onPress={() => nav.goBack()}
+            hitSlop={16}
+            style={styles.backButton}
+          >
+            <Text style={[styles.backLabel, {color: colors.textSecondary}]}>
+              ‹ back
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => Keyboard.dismiss()}
+            hitSlop={16}
+            style={styles.doneButton}
+          >
+            <Text style={[styles.doneLabel, {color: colors.textSecondary}]}>
+              done
+            </Text>
+          </Pressable>
+        </View>
+
         <View style={styles.header}>
           <Text style={[styles.date, {color: colors.textSecondary}]}>
             {new Date().toLocaleDateString('nb-NO', {
@@ -128,6 +150,26 @@ const styles = StyleSheet.create({
   inner: {
     flex: 1,
     paddingHorizontal: spacing.lg,
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+  },
+  backButton: {
+    paddingVertical: spacing.xs,
+  },
+  backLabel: {
+    fontFamily: fonts.body,
+    fontSize: 15,
+  },
+  doneButton: {
+    paddingVertical: spacing.xs,
+  },
+  doneLabel: {
+    fontFamily: fonts.body,
+    fontSize: 15,
   },
   header: {
     flexDirection: 'row',

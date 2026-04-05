@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {View, Text, Pressable, Animated, StyleSheet, Dimensions} from 'react-native';
 import Svg, {Circle, Defs, RadialGradient, Stop} from 'react-native-svg';
 import {useSQLiteContext} from 'expo-sqlite';
@@ -6,7 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {RootStackParamList} from '../navigation/AppNavigator';
 import {useTheme} from '../contexts/ThemeContext';
-import {getAllEntries, type JournalEntry} from '../db/entries';
+import {getAllEntries, seedDemoEntries, type JournalEntry} from '../db/entries';
 import type {MoodType} from '../constants/tokens';
 import {fonts, spacing} from '../constants/tokens';
 
@@ -92,8 +92,14 @@ export function ArringerScreen({navigation}: Props) {
   const db = useSQLiteContext();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  const [refreshKey, setRefreshKey] = useState(0);
   const entries = getAllEntries(db);
   const rings = computeRings(entries);
+
+  const handleSeedDemo = () => {
+    seedDemoEntries(db);
+    setRefreshKey((k) => k + 1);
+  };
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -137,6 +143,11 @@ export function ArringerScreen({navigation}: Props) {
             <Text style={[styles.emptyText, {color: colors.textSecondary}]}>
               Your first entry will become{'\n'}the heartwood of this tree.
             </Text>
+            <Pressable onPress={handleSeedDemo} style={styles.seedButton} hitSlop={12}>
+              <Text style={[styles.seedLabel, {color: colors.textSecondary}]}>
+                preview with demo data
+              </Text>
+            </Pressable>
           </View>
         ) : (
           <Svg width={SVG_SIZE} height={SVG_SIZE}>
@@ -237,5 +248,18 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 14,
     letterSpacing: 1,
+  },
+  seedButton: {
+    marginTop: spacing.xl,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 8,
+  },
+  seedLabel: {
+    fontFamily: fonts.body,
+    fontSize: 13,
+    opacity: 0.5,
   },
 });

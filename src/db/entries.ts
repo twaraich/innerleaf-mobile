@@ -93,3 +93,27 @@ export function getEntryCount(db: SQLiteDatabase): number {
   );
   return row?.count ?? 0;
 }
+
+/** Seed demo entries for Årringer visualization (dev only) */
+export function seedDemoEntries(db: SQLiteDatabase): void {
+  const moods: (MoodType | null)[] = [
+    'sunny', 'cloudy', 'rainy', 'sunny', 'foggy',
+    'stormy', 'rainy', 'sunny', 'cloudy', 'stormy',
+    'foggy', 'sunny', 'rainy', 'cloudy', null,
+  ];
+  const now = Date.now();
+  for (let i = 0; i < moods.length; i++) {
+    const date = new Date(now - (moods.length - i) * 86400000);
+    const entry: JournalEntry = {
+      id: generateId() + i,
+      mood: moods[i],
+      text: '',
+      created_at: date.toISOString(),
+      updated_at: date.toISOString(),
+    };
+    db.runSync(
+      'INSERT INTO entries (id, mood, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+      [entry.id, entry.mood, entry.text, entry.created_at, entry.updated_at],
+    );
+  }
+}
