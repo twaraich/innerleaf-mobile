@@ -139,7 +139,12 @@ leave clear notes on what's in progress so Claude Code can resume cleanly.
 ### Notes for next session
 - expo-sqlite does NOT work on web platform (WASM bundling issue). Test
   on iOS/Android only: `npx expo start --android` or `--ios`
+- Use `--tunnel` flag for phone testing via Expo Go (`npx expo start --tunnel --no-web`)
 - M4 (Årringer) complete — tree ring visualization built with react-native-svg
+- Stillhet breathing loop fixed (6ae5c63) — was stuck on "hold", now uses useState
+- WriteScreen has back + done buttons (6ae5c63)
+- Årringer has "preview with demo data" button — seeds 15 entries for testing
+- seedDemoEntries() in entries.ts is dev-only — remove before launch
 - Shopify integration pushed to M5 — physical journals may not exist yet
 - Folder was renamed from exitme-mobile/ → innerleaf-mobile/ on 2026-04-04
 - Guardian workflow added (.github/workflows/guardian.yml) on 2026-04-04
